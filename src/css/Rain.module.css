@@ -1,0 +1,11 @@
+
+  .rain{
+
+    position: absolute;
+    border-radius: 50%;
+    background-color: var(--obj-color);
+    width: 1vw;
+    height: 1vw;
+    
+
+  }
