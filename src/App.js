@@ -9,7 +9,7 @@ import Cloud from './components/Cloud';
 const App = () => {
   return (
     <div className="App">
-      <h1>React App</h1>
+      
       <Cloud/>
       
     </div>

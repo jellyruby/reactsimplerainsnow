@@ -4,9 +4,23 @@
     width: 20vw;
     height: 11vw;
     background: url(/public/cloud.svg) no-repeat;
-    background-size: cover;
+    background-size: contain;
     position: absolute;
     top: 0;
     left: 0;
+
+  }
+
+  .PrecipitationCloud{
+
+    background-color-color: var(--obj-color);
+  }
+
+
+  .CloudForm{
+
+    width: 100vw;
+    height: 20vw;
+
 
   }

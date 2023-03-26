@@ -4,56 +4,71 @@ import React, { memo, useEffect, useRef,useState } from "react";
 import styles from "../css/Cloud.module.css";
 
 const Cloud = memo(() => {
-  const animationRef = useRef(null);
-  const CloudRef = useRef(null);
+
   
+  const CloudRef = useRef(null);
+  const [isPrecipitation, setIsPrecipitation] = useState(false);
 
   //AddDragAndDrop
   
   const [onClickState, setOnClickState] = useState(false);
-  const [dragStart, setDragStart] = useState({x: 0, y: 0});
-  const [dragEnd, setDragEnd] = useState({x: 0, y: 0});
 
-
-  const onMouseDown = () => {
+  const onMouseDown = (e) => {
     setOnClickState(true);
   }
 
-  const onDrag = (e) => {
+  const onMouseMove = (e) => {
+    
     if(onClickState) {
-      setDragStart({x: e.clientX, y: e.clientY});
+      const cloudPosition = {x: 0, y: 0};
+      const {width, height} = CloudRef.current.getBoundingClientRect();
+      
+      cloudPosition.x = e.clientX - ( (width/2));
+      cloudPosition.y = e.clientY - ( (height/2));
+
+      CloudRef.current.style.left = `${cloudPosition.x}px`;
+      CloudRef.current.style.top = `${cloudPosition.y}px`;
     }
   }
 
   const onMouseUp = (e) => {
+
     setOnClickState(false);
-    setDragEnd({x: e.clientX, y: e.clientY});
+  
   }
 
-  useEffect(() => {
+  const onMouseOut = (e) => {
 
-    
-    const render = () => {
-      animationRef.current = requestAnimationFrame(render);
-      //AddDragAndDrop
-      if(onClickState) {
-        CloudRef.current.style.left = `${dragEnd.x - dragStart.x}px`;
-        CloudRef.current.style.top = `${dragEnd.y - dragStart.y}px`;
-      }
+    setOnClickState(false);
+  
+  }
 
-    }
+  const onDoubleClick = () => {
 
-    render();
+    setIsPrecipitation((prevValue)=>!prevValue);
 
-    return () => {
-      cancelAnimationFrame(animationRef.current);
-    }
+  }
 
-  }, []);
+  const CloudStyle = () => {
+
+    if(isPrecipitation) return (styles.Cloud + " " + styles.PrecipitationCloud);
+
+    return styles.Cloud;
+  }
 
   return (
-    <div className={styles.Cloud} ref={CloudRef}  onMouseDown={onMouseDown} onDrag={onDrag} onMouseUp={onMouseUp}>
-      <div className={styles.Cloud}></div>
+    <div 
+      className={styles.CloudForm}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove} 
+      onMouseUp={onMouseUp}
+      onMouseOut={onMouseOut}
+      onDoubleClick={onDoubleClick}
+      >
+      
+      <div className={CloudStyle()} ref={CloudRef}>
+
+      </div>
     </div>
   );
 

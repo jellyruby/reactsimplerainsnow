@@ -1,6 +1,7 @@
 
   .snow{
 
+    z-intex: 5;
     position: absolute;
     border-radius: 50%;
     background-color: var(--obj-color);
