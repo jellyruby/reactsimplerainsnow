@@ -1,6 +1,7 @@
 /// Cloud에서 Rain과 Snow가 내리는 것을 표현하는 컴포넌트
 
 import React, { memo, useEffect, useRef,useState } from "react";
+import Snow from "./Snow";
 import styles from "../css/Cloud.module.css";
 
 const Cloud = memo(() => {
@@ -10,10 +11,9 @@ const Cloud = memo(() => {
   const [isPrecipitation, setIsPrecipitation] = useState(false);
 
   //AddDragAndDrop
-  
   const [onClickState, setOnClickState] = useState(false);
 
-  const onMouseDown = (e) => {
+  const onMouseDown = () => {
     setOnClickState(true);
   }
 
@@ -23,18 +23,16 @@ const Cloud = memo(() => {
       const cloudPosition = {x: 0, y: 0};
       const {width, height} = CloudRef.current.getBoundingClientRect();
       
-      cloudPosition.x = e.clientX - ( (width/2));
-      cloudPosition.y = e.clientY - ( (height/2));
+      cloudPosition.x = e.clientX - (width/2);
+      cloudPosition.y = e.clientY - (height/2);
 
       CloudRef.current.style.left = `${cloudPosition.x}px`;
       CloudRef.current.style.top = `${cloudPosition.y}px`;
     }
   }
 
-  const onMouseUp = (e) => {
-
+  const onMouseUp = () => {
     setOnClickState(false);
-  
   }
 
   const onMouseOut = (e) => {
@@ -67,7 +65,7 @@ const Cloud = memo(() => {
       >
       
       <div className={CloudStyle()} ref={CloudRef}>
-
+        
       </div>
     </div>
   );
