@@ -1,12 +1,12 @@
 
   .snow{
 
-    z-intex: 5;
+    z-index: 5;
     position: absolute;
     border-radius: 50%;
     background-color: var(--obj-color);
-    width: 1vw;
-    height: 1vw;
-    
+    width: 0.5vw;
+    height: 0.5vw;
+    box-shadow: 0 0 0.3vw 0.1vw var(--obj-color);    
 
   }

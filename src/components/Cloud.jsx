@@ -63,7 +63,7 @@ const Cloud = memo(() => {
       onMouseOut={onMouseOut}
       onDoubleClick={onDoubleClick}
       >
-      
+      <Snow/>
       <div className={CloudStyle()} ref={CloudRef}>
         
       </div>
