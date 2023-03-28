@@ -1,6 +1,5 @@
 import './App.css';
 import React from 'react';
-import Snow from './components/Snow';
 import Cloud from './components/Cloud';
 //import snow component
 

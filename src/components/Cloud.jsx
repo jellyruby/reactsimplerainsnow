@@ -4,11 +4,21 @@ import React, { memo, useEffect, useRef,useState } from "react";
 import Snow from "./Snow";
 import styles from "../css/Cloud.module.css";
 
+const getRectCenter = (rect) => {
+  return {
+    x: rect.left + rect.width / 2,
+    y: rect.top + rect.height / 2,
+  }
+}
+
 const Cloud = memo(() => {
 
   
   const CloudRef = useRef(null);
   const [isPrecipitation, setIsPrecipitation] = useState(false);
+  const [PrecipitationList, setPrecipitationList] = useState([]);
+  const EffectRef = useRef(null);
+  const [screen, setS] = useState(0);
 
   //AddDragAndDrop
   const [onClickState, setOnClickState] = useState(false);
@@ -16,7 +26,7 @@ const Cloud = memo(() => {
   const onMouseDown = () => {
     setOnClickState(true);
   }
-
+  
   const onMouseMove = (e) => {
     
     if(onClickState) {
@@ -54,6 +64,28 @@ const Cloud = memo(() => {
     return styles.Cloud;
   }
 
+  useEffect(()=>{
+
+    EffectRef.current = setTimeout(()=>{
+      setPrecipitationList(
+        (prevValue)=>{
+          const {left,top} = getRectCenter(CloudRef.current.getBoundingClientRect());
+
+          return [...prevValue, <Snow key={prevValue.length} left={left} top={top} />];
+        }
+      );
+    },1000);
+
+    return(
+      (prevValue)=>{
+        clearTimeout(EffectRef.current);
+      if(prevValue) {
+        setPrecipitationList([]);
+      }
+    })
+
+  },[PrecipitationList])
+
   return (
     <div 
       className={styles.CloudForm}
@@ -63,7 +95,7 @@ const Cloud = memo(() => {
       onMouseOut={onMouseOut}
       onDoubleClick={onDoubleClick}
       >
-      <Snow/>
+      {PrecipitationList}
       <div className={CloudStyle()} ref={CloudRef}>
         
       </div>
