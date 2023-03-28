@@ -18,7 +18,7 @@ const Cloud = memo(() => {
   const [isPrecipitation, setIsPrecipitation] = useState(false);
   const [PrecipitationList, setPrecipitationList] = useState([]);
   const EffectRef = useRef(null);
-  const [screen, setS] = useState(0);
+  const [screenSize, setScreenSize] = useState({width: 0, height: 0});
 
   //AddDragAndDrop
   const [onClickState, setOnClickState] = useState(false);
@@ -85,6 +85,11 @@ const Cloud = memo(() => {
     })
 
   },[PrecipitationList])
+
+  useEffect(()=>{
+    const {innerWidth, innerHeight} = window;
+    setScreenSize({width: innerWidth, height: innerHeight});
+  },[]);
 
   return (
     <div 
