@@ -1,4 +1,4 @@
-import React,{memo, useEffect, useRef} from "react";
+import React,{memo, useEffect, useRef,useContext} from "react";
 import styles from "../css/Snow.module.css";
 
 
@@ -13,6 +13,7 @@ const Snow = memo(({left,top}) => {
     const render = () => {
 
       if(initialRef.current) {
+        
         snowRef.current.style.top = top+'px';
         snowRef.current.style.left = left+'px';
         initialRef.current = false;

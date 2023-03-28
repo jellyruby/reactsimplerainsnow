@@ -5,6 +5,7 @@ import Snow from "./Snow";
 import styles from "../css/Cloud.module.css";
 
 const getRectCenter = (rect) => {
+
   return {
     x: rect.left + rect.width / 2,
     y: rect.top + rect.height / 2,
@@ -69,9 +70,9 @@ const Cloud = memo(() => {
     EffectRef.current = setTimeout(()=>{
       setPrecipitationList(
         (prevValue)=>{
-          const {left,top} = getRectCenter(CloudRef.current.getBoundingClientRect());
-
-          return [...prevValue, <Snow key={prevValue.length} left={left} top={top} />];
+          const {x,y} = getRectCenter(CloudRef.current.getBoundingClientRect());
+            
+          return [...prevValue, <Snow key={prevValue.length} left={x} top={y} />];
         }
       );
     },1000);
