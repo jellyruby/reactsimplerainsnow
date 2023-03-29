@@ -1,6 +1,7 @@
 
   .Cloud{
 
+    z-index: 10;
     width: 20vw;
     height: 11vw;
     background: url(/public/cloud.svg) no-repeat;

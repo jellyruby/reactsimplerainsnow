@@ -1,13 +1,13 @@
 import './App.css';
-import React,{createContext,useReducer} from 'react';
+import React,{createContext,useEffect,useReducer} from 'react';
 import Cloud from './components/Cloud';
 //import snow component
 
 export const WeatherContext = createContext(
   {
     screenSize: {
-      width: 0,
-      height: 0
+      width: window.innerWidth,
+      height: document.body.scrollHeight 
     },
     cloud:{
       List : [<Cloud/>]
@@ -18,8 +18,8 @@ export const WeatherContext = createContext(
 
 const initialState = {
   screenSize: {
-    width: 0,
-    height: 0
+    width: window.innerWidth ,
+    height: document.body.scrollHeight 
   },
   cloud:{
     List : [<Cloud/>]
@@ -57,6 +57,17 @@ const App = () => {
   const onClick = () => {
     dispatch({type: CREATE_CLOUD});
   }
+  
+  useEffect(() => {
+    const handleResize = () => {
+      console.log('resize');
+      dispatch({type: SET_SCREEN_SIZE, value: {width: window.innerWidth, height: document.body.scrollHeight}});
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   return (
     <WeatherContext.Provider value={{screenSize: state.screenSize, dispatch}}>

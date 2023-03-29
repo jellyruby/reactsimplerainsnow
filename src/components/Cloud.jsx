@@ -1,6 +1,6 @@
 /// Cloud에서 Rain과 Snow가 내리는 것을 표현하는 컴포넌트
 
-import React, { memo, useEffect, useRef,useState } from "react";
+import React, { memo, useEffect, useMemo, useCallback,useRef,useState } from "react";
 import Snow from "./Snow";
 import styles from "../css/Cloud.module.css";
 
@@ -18,15 +18,18 @@ const Cloud = memo(() => {
   const CloudRef = useRef(null);
   const [isPrecipitation, setIsPrecipitation] = useState(false);
   const [PrecipitationList, setPrecipitationList] = useState([]);
+  const [DeletePrecipitationList, setDeletePrecipitationList] = useState([]);
+  
   const EffectRef = useRef(null);
-  const [screenSize, setScreenSize] = useState({width: 0, height: 0});
+  const IndexRef = useRef(0);
+  
 
   //AddDragAndDrop
   const [onClickState, setOnClickState] = useState(false);
 
-  const onMouseDown = () => {
+  const onMouseDown = useCallback(() => {
     setOnClickState(true);
-  }
+  },[]);
   
   const onMouseMove = (e) => {
     
@@ -42,21 +45,11 @@ const Cloud = memo(() => {
     }
   }
 
-  const onMouseUp = () => {
-    setOnClickState(false);
-  }
+  const onMouseUp = useCallback( () => setOnClickState(false),[])
 
-  const onMouseOut = (e) => {
+  const onMouseOut = useCallback( (e) => setOnClickState(false),[])
 
-    setOnClickState(false);
-  
-  }
-
-  const onDoubleClick = () => {
-
-    setIsPrecipitation((prevValue)=>!prevValue);
-
-  }
+  const onDoubleClick = useCallback( () => setIsPrecipitation((prevValue)=>!prevValue),[])
 
   const CloudStyle = () => {
 
@@ -65,14 +58,52 @@ const Cloud = memo(() => {
     return styles.Cloud;
   }
 
+  const deleteFunc = ((key)=>{
+
+    
+    setDeletePrecipitationList( prevValue => { 
+      
+      return [...prevValue,key]
+    });
+    
+  });
+
+
   useEffect(()=>{
 
     EffectRef.current = setTimeout(()=>{
+      IndexRef.current++;
       setPrecipitationList(
         (prevValue)=>{
           const {x,y} = getRectCenter(CloudRef.current.getBoundingClientRect());
-            
-          return [...prevValue, <Snow key={prevValue.length} left={x} top={y} />];
+          
+          
+
+          if(prevValue.length > 0 && DeletePrecipitationList.length > 0){
+          
+              
+
+            prevValue = prevValue.filter(
+              (item)=>{
+                
+                return !DeletePrecipitationList.includes(item.key)
+              }
+            );
+            //setDeletePrecipitationList([]);
+          }
+
+          console.log(prevValue);
+          
+          return [...prevValue,{
+              key:IndexRef.current,
+              tag:<Snow 
+                    key={IndexRef.current} 
+                    left={x} 
+                    top={y}  
+                    index={IndexRef.current}
+                    deleteFunc={deleteFunc}
+                  />
+              }];
         }
       );
     },1000);
@@ -87,10 +118,7 @@ const Cloud = memo(() => {
 
   },[PrecipitationList])
 
-  useEffect(()=>{
-    const {innerWidth, innerHeight} = window;
-    setScreenSize({width: innerWidth, height: innerHeight});
-  },[]);
+  
 
   return (
     <div 
@@ -101,7 +129,9 @@ const Cloud = memo(() => {
       onMouseOut={onMouseOut}
       onDoubleClick={onDoubleClick}
       >
-      {PrecipitationList}
+      {
+      PrecipitationList.map((item)=>item.tag)
+      }
       <div className={CloudStyle()} ref={CloudRef}>
         
       </div>
