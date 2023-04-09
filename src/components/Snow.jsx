@@ -1,6 +1,6 @@
 import React,{memo, useEffect, useRef,useContext} from "react";
 import styles from "../css/Snow.module.css";
-import {WeatherContext} from "../App";
+import {WeatherContext} from "../reducer/index";
 
 
 const Snow = memo(({left,top,deleteFunc,index}) => {
@@ -55,7 +55,7 @@ const Snow = memo(({left,top,deleteFunc,index}) => {
       cancelAnimationFrame(animationRef.current);
     }
 
-  }, [left,top]);
+  }, [deleteFunc, index, left, screenSize, top]);
 
 
   return (
